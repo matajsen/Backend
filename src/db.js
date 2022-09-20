@@ -1,6 +1,6 @@
 import mongo from "mongodb"
 
-let connection_string = "mongodb+srv://admin:<password>@cluster0.jcusoji.mongodb.net/?retryWrites=true&w=majority";
+let connection_string = "mongodb+srv://admin:admin1@cluster0.jcusoji.mongodb.net/?retryWrites=true&w=majority";
 
 let client = new mongo.MongoClient(connection_string, {
     useNewUrlParser: true,
@@ -22,7 +22,7 @@ export default () => {
             }
             else {
                 console.log("Uspjesno spajanje na bazu")
-                let db = client.db("free_igraliste")
+                let db = client.db("sportske-dvorane")
                 resolve(db)
             }
         })
