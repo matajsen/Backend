@@ -52,4 +52,11 @@ app.delete("/sportske-dvorane/:id", async (req, res) => {
   res.json(results);
 });
 
+app.get("/timovi", async (req, res) => {
+  let db = await connect();
+  let cursor = await db.collection("timovi").find();
+  let results = await cursor.toArray();
+  res.json(results);
+});
+
 app.listen(port, () => console.log(`Port listen ${port}`));
