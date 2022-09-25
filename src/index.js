@@ -18,36 +18,43 @@ app.get("/sportske-dvorane", async (req, res) => {
 
 app.patch("/sportske-dvorane/:id", async (req, res) => {
   const id = req.params.id;
-  const { dan, ekipa } = req.body;
+  const { datum, ekipa, termin } = req.body;
 
   let db = await connect();
   let dvorana = await db
     .collection("sportske-dvorane")
     .findOne({ _id: new ObjectId(id) });
-  let found = dvorana.termini.includes({ dan, ekipa });
-  if (found) {
-    console.log("AAAAAAAAAAA");
-    res.json({});
+  if (dvorana.hasOwnProperty("termin")) {
+    let found = dvorana.termini.filter(
+      (zakazano) =>
+        zakazano.datum === datum &&
+        zakazano.ekipa === ekipa &&
+        zakazano.termin === termin
+    );
+    if (found.lenght) {
+      res.json({});
+      return;
+    }
   }
   let results = await db
     .collection("sportske-dvorane")
     .updateOne(
       { _id: new ObjectId(id) },
-      { $addToSet: { termini: { dan, ekipa } } }
+      { $addToSet: { termini: { datum, ekipa, termin } } }
     );
   res.json(results);
 });
 
 app.delete("/sportske-dvorane/:id", async (req, res) => {
   const id = req.params.id;
-  const { dan, ekipa } = req.body;
+  const { datum, ekipa } = req.body;
 
   let db = await connect();
   let results = await db
     .collection("sportske-dvorane")
     .updateOne(
       { _id: new ObjectId(id) },
-      { $pull: { termini: { dan, ekipa } } }
+      { $pull: { termini: { datum, ekipa, temrmin } } }
     );
   res.json(results);
 });
