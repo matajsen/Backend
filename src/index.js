@@ -7,7 +7,7 @@ import cors from "cors";
 const app = express(); //instanciranje aplikacije
 app.use(cors());
 app.use(express.json());
-const port = 3000; //port na kojem će web server slusat
+const port = process.env.PORT || 3000; //port na kojem će web server slusat
 
 app.get("/sportske-dvorane", async (req, res) => {
   let db = await connect();
